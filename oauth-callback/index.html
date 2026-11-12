@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Email Assistant: your code</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; max-width: 30rem; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { font-size: 1.3rem; }
+  textarea { width: 100%; box-sizing: border-box; font: 14px monospace; padding: .6rem; height: 7rem; }
+  button { font-size: 1.1rem; padding: .7rem 1.2rem; margin-top: .6rem; width: 100%; }
+  .note { color: #555; font-size: .9rem; }
+  .error { color: #a00; }
+</style>
+</head>
+<body>
+<h1 id="title">Almost done</h1>
+<p id="msg"></p>
+<textarea id="code" readonly hidden></textarea>
+<button id="copy" hidden>Copy code</button>
+<p class="note" id="note" hidden>Go back to Telegram and paste this code as a message. It works once, for a few minutes, and
+means nothing without the secret kept by your assistant. This page keeps and sends nothing.</p>
+<script>
+  // Everything stays in this browser tab: the code is read from the address, shown, and removed from the address.
+  const params = new URLSearchParams(location.search);
+  const code = params.get("code");
+  const error = params.get("error");
+  const $ = (id) => document.getElementById(id);
+  history.replaceState(null, "", location.pathname);
+  if (code) {
+    $("msg").textContent = "Tap Copy, then go back to Telegram and paste it.";
+    $("code").value = code;
+    $("code").hidden = $("copy").hidden = $("note").hidden = false;
+    $("copy").onclick = async () => {
+      try { await navigator.clipboard.writeText(code); $("copy").textContent = "Copied. Now go back to Telegram."; }
+      catch { $("code").select(); $("copy").textContent = "Press and hold the code to copy it"; }
+    };
+  } else {
+    $("title").textContent = "No code here";
+    $("msg").textContent = error
+      ? "Google did not allow the sign-in (" + error + "). Go back to Telegram and tap Connect Gmail to try again."
+      : "Open this page from the Connect Gmail button in Telegram.";
+    $("msg").className = "error";
+  }
+</script>
+</body>
+</html>
