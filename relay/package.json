@@ -1,0 +1,10 @@
+{
+  "name": "email-assistant-oauth-relay",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Holds a Google sign-in code for a few minutes so the Email Assistant can collect it. Stores no credentials.",
+  "scripts": { "test": "node --test test/*.test.js" },
+  "dependencies": { "@upstash/redis": "^1.34.0" },
+  "engines": { "node": ">=20" }
+}

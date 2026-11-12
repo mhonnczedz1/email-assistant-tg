@@ -1,0 +1,10 @@
+{
+  "rewrites": [{ "source": "/oauth/callback", "destination": "/api/callback" }],
+  "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "Cache-Control", "value": "no-store" },
+      { "key": "Referrer-Policy", "value": "no-referrer" },
+      { "key": "X-Content-Type-Options", "value": "nosniff" }
+    ] }
+  ]
+}
